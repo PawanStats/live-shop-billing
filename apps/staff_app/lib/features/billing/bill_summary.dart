@@ -8,7 +8,7 @@ class BillSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: const Text('Total'),
-      trailing: Text('\\$${total.toStringAsFixed(2)}'),
+      trailing: Text('\$${total.toStringAsFixed(2)}'),
     );
   }
 }

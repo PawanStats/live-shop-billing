@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'bill_summary.dart';
 import 'complete_sale_button.dart';
+import '../scanner/camera_scanner.dart';
 
 class BillingScreen extends StatefulWidget {
   const BillingScreen({super.key});
@@ -19,14 +20,23 @@ class _BillingScreenState extends State<BillingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Billing')),
+      appBar: AppBar(
+        title: const Text('Billing'),
+        actions: [
+          IconButton(
+            tooltip: 'Scan Barcode',
+            icon: const Icon(Icons.qr_code_scanner),
+            onPressed: _scanAndAdd,
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Expanded(
             child: ListView(
               children: items.map((e) => ListTile(
                 title: Text(e['name'] as String),
-                trailing: Text('\\$${(e['price'] as double).toStringAsFixed(2)} x ${e['qty']}'),
+                trailing: Text('\$${(e['price'] as double).toStringAsFixed(2)} x ${e['qty']}'),
               )).toList(),
             ),
           ),
@@ -35,5 +45,21 @@ class _BillingScreenState extends State<BillingScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> _scanAndAdd() async {
+    final code = await Navigator.push<String>(
+      context,
+      MaterialPageRoute(builder: (_) => const CameraScanner()),
+    );
+    if (code != null && code.isNotEmpty) {
+      setState(() {
+        items.add({
+          'name': code,
+          'price': 0.0,
+          'qty': 1,
+        });
+      });
+    }
   }
 }

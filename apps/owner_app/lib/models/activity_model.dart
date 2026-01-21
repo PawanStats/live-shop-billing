@@ -12,9 +12,9 @@ class Activity {
   });
 
   factory Activity.fromMap(Map<String, dynamic> map) => Activity(
-    id: map['id'] as int,
-    type: map['type'] as String,
-    message: map['message'] as String,
-    timestamp: DateTime.parse(map['timestamp'] as String),
-  );
+        id: (map['id'] as num).toInt(),
+        type: map['type'] as String,
+        message: map['message'] as String,
+        timestamp: DateTime.parse(map['created_at'] as String),
+      );
 }
